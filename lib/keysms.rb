@@ -104,6 +104,11 @@ class SMS < KeyteqService
 
     @payload[:receivers] = [receivers].flatten
     @payload[:message] = message
+    [:sender, :time, :date].each do |attr|
+      if val = options.fetch(attr, nil)
+        @payload[attr] = options.fetch(attr)
+      end
+    end
 
     call
   end
