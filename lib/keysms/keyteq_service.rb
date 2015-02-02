@@ -26,7 +26,6 @@ module Keysms
       @session = Patron::Session.new
       @session.base_url = @options.fetch(:url)
       @session.headers['User-Agent'] = "KeysmsRuby/#{Keysms::VERSION}"
-      @session.enable_debug "/tmp/patron.debug"
       @session
     end
 
