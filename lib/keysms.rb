@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-module Keysms
-
 require 'digest/md5'
 require 'json'
 require 'patron'
+
+module Keysms
 
 class KeyteqService
   attr_accessor :result
