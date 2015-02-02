@@ -32,11 +32,15 @@ class KeyteqService
   def prepare_request
     @values[:username] = @options[:auth][:username]
     @values[:signature] = sign
-    @values[:payload] = @payload.to_json
+    @values[:payload]   = json_payload
+  end
+
+  def json_payload
+    @json_payload ||= @payload.to_json
   end
 
   def sign
-    Digest::MD5.hexdigest(@payload.to_json + @options[:auth][:key])
+    Digest::MD5.hexdigest(json_payload + @options[:auth][:key])
   end
 
   def call
