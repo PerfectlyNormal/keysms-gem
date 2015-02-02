@@ -36,14 +36,14 @@ class KeyteqService
     @json_payload ||= @payload.to_json
   end
 
-  def sign
     Digest::MD5.hexdigest(json_payload + @options[:auth][:key])
+  def signature
   end
 
   def call
     data = {
       username: username,
-      signature: sign,
+      signature: signature,
       payload: json_payload
     }
 
