@@ -90,12 +90,8 @@ class SMS < KeyteqService
     @options = @options.merge(options)
     @options[:path] = "/messages"
 
-    if (receivers.is_a? String)
-      receivers = [receivers]
-    end
-
+    @payload[:receivers] = [receivers].flatten
     @payload[:message] = message
-    @payload[:receivers] = receivers
 
     prepare_request
     prepare_session
