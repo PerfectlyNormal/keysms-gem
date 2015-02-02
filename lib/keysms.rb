@@ -30,6 +30,7 @@ class KeyteqService
 
     @session = Patron::Session.new
     @session.base_url = @options.fetch(:url)
+    @session.headers['User-Agent'] = "KeysmsRuby/#{Keysms::VERSION}"
     @session
   end
 
