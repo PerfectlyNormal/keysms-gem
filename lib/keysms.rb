@@ -112,6 +112,7 @@ end
 class Info < KeyteqService
   def info
     @options[:path] = "/auth/current.json"
+
     @payload[:user] = true
     @payload[:account] = true
 
