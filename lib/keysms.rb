@@ -99,7 +99,6 @@ end
 
 class SMS < KeyteqService
   def deliver(message, receivers, options = {})
-    @options = @options.merge(options)
     @options[:path] = "/messages"
 
     @payload[:receivers] = [receivers].flatten
