@@ -1,54 +1,54 @@
 # encoding: utf-8
 
 module Keysms
-  
+
 require 'digest/md5'
 require 'json'
 require 'patron'
 
 class KeyteqService
   attr_accessor :result
-  
+
   def initialize(url = "https://app.keysms.no", options = {})
     @options, @payload, @values = {}, {}, {}
     @options = @options.merge(options)
     @options[:url] = url
   end
-  
+
   def authenticate(username, key)
     @options[:auth] = {}
     @options[:auth][:username] = username
     @options[:auth][:key] = key
     self
   end
-    
+
   private
-  
+
   def prepare_session
     @session = Patron::Session.new
     @session.base_url = @options.delete(:url)
   end
-  
+
   def prepare_request
     @values[:username] = @options[:auth][:username]
     @values[:signature] = sign
     @values[:payload] = @payload.to_json
   end
-  
+
   def sign
     Digest::MD5.hexdigest(@payload.to_json + @options[:auth][:key])
   end
-  
+
   def call
     data = @values.collect do | key, value |
       "#{key}=#{value}"
     end
-    
+
     response = @session.post(@options[:path], data.join("&"))
     handle_response(response.body)
     @response
   end
-  
+
   def handle_response(response_text)
     @result = JSON.parse(response_text)
     begin
@@ -68,7 +68,7 @@ class KeyteqService
       raise SMSError.new(@result)
     end
   end
-  
+
   def find_error_code(structure)
     structure.each do | key, value |
       if (key == "code")
@@ -82,7 +82,7 @@ class KeyteqService
       end
     end
   end
-  
+
 end
 
 class SMS < KeyteqService
@@ -108,7 +108,7 @@ class Info < KeyteqService
     @options[:path] = "/auth/current.json"
     @payload[:user] = true
     @payload[:account] = true
-    
+
     prepare_request
     prepare_session
     call
@@ -125,12 +125,12 @@ end
 
 class NotAuthenticatedError < SMSError
   attr_accessor :messages
-  
+
   def initialize(error)
     @messages = error["messages"]
     super(error)
   end
-  
+
   def to_s
     @messages.join(", ")
   end
@@ -138,12 +138,12 @@ end
 
 class NoValidReceiversError < SMSError
   attr_accessor :failed_receivers
-  
+
   def initialize(error)
     @failed_receivers = error["error"]["receivers"]["data"]["failed"]
     super(error)
   end
-  
+
   def to_s
     @failed_receivers.join(", ")
   end
