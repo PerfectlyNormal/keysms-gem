@@ -30,7 +30,7 @@ class KeyteqService
   end
 
   def prepare_request
-    @values[:username] = @options[:auth][:username]
+    @values[:username]  = @options[:auth][:username]
     @values[:signature] = sign
     @values[:payload]   = json_payload
   end
