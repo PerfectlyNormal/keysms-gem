@@ -9,7 +9,7 @@ require 'patron'
 class KeyteqService
   attr_accessor :result
   
-  def initialize(url = "http://app.keysms.no", options = {})
+  def initialize(url = "https://app.keysms.no", options = {})
     @options, @payload, @values = {}, {}, {}
     @options = @options.merge(options)
     @options[:url] = url
