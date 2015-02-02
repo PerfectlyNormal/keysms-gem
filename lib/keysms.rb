@@ -28,7 +28,7 @@ class KeyteqService
   def session
     return @session if defined?(@session)
 
-    @session = Patron::Sesssion.new
+    @session = Patron::Session.new
     @session.base_url = @options.fetch(:url)
     @session
   end
