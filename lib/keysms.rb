@@ -58,7 +58,7 @@ class KeyteqService
 
     response = session.post(@options[:path], data)
     handle_response(response.body)
-    @response
+    @result
   end
 
   def handle_response(response_text)
