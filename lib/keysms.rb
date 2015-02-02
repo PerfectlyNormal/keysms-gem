@@ -90,7 +90,7 @@ class KeyteqService
 end
 
 class SMS < KeyteqService
-  def send(message, receivers, options = {})
+  def deliver(message, receivers, options = {})
     @options = @options.merge(options)
     @options[:path] = "/messages"
 
