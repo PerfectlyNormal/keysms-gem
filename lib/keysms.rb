@@ -10,7 +10,7 @@ class KeyteqService
   attr_accessor :result
 
   def initialize(url = "https://app.keysms.no", options = {})
-    @options, @payload, @values = {}, {}, {}
+    @options, @payload = {}, {}
     @options = @options.merge(options)
     @options[:url] = url
   end
@@ -32,12 +32,6 @@ class KeyteqService
     @session
   end
 
-  def prepare_request
-    @values[:username]  = @options[:auth][:username]
-    @values[:signature] = sign
-    @values[:payload]   = json_payload
-  end
-
   def json_payload
     @json_payload ||= @payload.to_json
   end
@@ -47,11 +41,13 @@ class KeyteqService
   end
 
   def call
-    data = @values.collect do | key, value |
-      "#{key}=#{value}"
-    end
+    data = {
+      username: username,
+      signature: sign,
+      payload: json_payload
+    }
 
-    response = session.post(@options[:path], data.join("&"))
+    response = session.post(@options[:path], data)
     handle_response(response.body)
     @response
   end
@@ -100,7 +96,6 @@ class SMS < KeyteqService
     @payload[:receivers] = [receivers].flatten
     @payload[:message] = message
 
-    prepare_request
     call
   end
 end
@@ -111,7 +106,6 @@ class Info < KeyteqService
     @payload[:user] = true
     @payload[:account] = true
 
-    prepare_request
     call
   end
 end
