@@ -24,9 +24,12 @@ class KeyteqService
 
   private
 
-  def prepare_session
-    @session = Patron::Session.new
+  def session
+    return @session if defined?(@session)
+
+    @session = Patron::Sesssion.new
     @session.base_url = @options.fetch(:url)
+    @session
   end
 
   def prepare_request
@@ -48,7 +51,7 @@ class KeyteqService
       "#{key}=#{value}"
     end
 
-    response = @session.post(@options[:path], data.join("&"))
+    response = session.post(@options[:path], data.join("&"))
     handle_response(response.body)
     @response
   end
@@ -98,7 +101,6 @@ class SMS < KeyteqService
     @payload[:message] = message
 
     prepare_request
-    prepare_session
     call
   end
 end
@@ -110,7 +112,6 @@ class Info < KeyteqService
     @payload[:account] = true
 
     prepare_request
-    prepare_session
     call
   end
 end
