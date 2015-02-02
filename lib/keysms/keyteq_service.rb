@@ -58,7 +58,6 @@ module Keysms
     end
 
     def handle_response(response_text)
-      $stderr.puts "Response: #{response_text}"
       @result = JSON.parse(response_text)
       begin
         if (@result["ok"] == false)
