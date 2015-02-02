@@ -26,7 +26,7 @@ class KeyteqService
 
   def prepare_session
     @session = Patron::Session.new
-    @session.base_url = @options.delete(:url)
+    @session.base_url = @options.fetch(:url)
   end
 
   def prepare_request
