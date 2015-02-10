@@ -4,6 +4,7 @@ require 'digest/md5'
 require 'json'
 require 'patron'
 
+require 'keysms/version'
 require 'keysms/keyteq_service'
 require 'keysms/sms'
 require 'keysms/info'
