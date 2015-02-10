@@ -9,6 +9,8 @@ module Keysms
 
       @options = @options.merge(options)
       @options[:url] ||= "https://app.keysms.no"
+      @options[:connect_timeout] ||= 5
+      @options[:timeout]         ||= 10
     end
 
     def authenticate(username, key)
@@ -25,6 +27,8 @@ module Keysms
 
       @session = Patron::Session.new
       @session.base_url = @options.fetch(:url)
+      @session.connect_timeout = @options.fetch(:connect_timeout).to_i
+      @session.timeout         = @options.fetch(:timeout).to_i
       @session.headers['User-Agent'] = "KeysmsRuby/#{Keysms::VERSION}"
       @session
     end
